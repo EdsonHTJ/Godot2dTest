@@ -6,21 +6,20 @@ var movement = Vector2(0,0)
 var G = 9.81
 const jumpForce = 500
 var isAttacking = false
-var isSufferingDamage = false
 var atkDirection = 0
 var initial = Vector2(0,0)
 
-signal attack(body)
-
 func _ready():
+	PlayerController.connect("playerHited", self, "_on_player_hitted")
 	initial = position
 
 func _physics_process(delta):
 	
 	var movx = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	
-	if isSufferingDamage:
-		movx = (1000 * 1 if ($AnimatedSprite.flip_h) else -1)
+	if PlayerController.isSuffering:
+		movx = -1 * PlayerController.damageDirection
+		$AnimatedSprite.flip_h = (PlayerController.damageDirection != 1)
 	movement.x = movx * speedx
 	
 	if(not is_on_floor()):
@@ -33,15 +32,9 @@ func _physics_process(delta):
 	
 
 func _process(delta):
-	if isSufferingDamage:
+	if PlayerController.isSuffering:
 		return 
 		
-	if PlayerController.playerHited:
-		PlayerController.playerHited = false
-		isSufferingDamage = true
-		$AnimatedSprite.play("damage")
-		return
-	
 	if not isAttacking:
 		if(not is_on_floor()):
 			if movement.y < 0:
@@ -65,25 +58,30 @@ func _process(delta):
 			$AnimatedSprite.play("attack")
 		
 
-
+func _on_player_hitted():
+	PlayerController.isSuffering = true
+	$AnimatedSprite.play("death")
+	return
+	
 
 func _on_AnimatedSprite_animation_finished():
 	if isAttacking:
 		isAttacking = false
-	elif isSufferingDamage:
-		isSufferingDamage = false
+	
+	if PlayerController.isSuffering:
+		PlayerController.isSuffering = false
 
 
 
 func _on_attackRight_body_entered(body):
 	if isAttacking and atkDirection == 1:
-		emit_signal("attack", body)
+		PlayerController.playerAttacks(100, body)
 
 
 
 func _on_attackLeft_body_entered(body):
 	if isAttacking and atkDirection == -1:
-		emit_signal("attack", body)
+		PlayerController.playerAttacks(100, body)
 
 
 

@@ -814,11 +814,10 @@ position = Vector2( 659.667, 129.333 )
 scale = Vector2( 1.66667, 1.66667 )
 texture = ExtResource( 10 )
 
-[node name="player" parent="foreground" instance=ExtResource( 5 )]
-position = Vector2( 33.3333, 177 )
+[node name="player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 227, 499 )
 
-[node name="cameraPlayer" type="Camera2D" parent="foreground/player"]
-position = Vector2( 67.3333, -34.6667 )
+[node name="Camera2D" type="Camera2D" parent="player"]
 current = true
 limit_top = 0
 limit_bottom = 720

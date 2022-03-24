@@ -13,6 +13,7 @@ var walkdir = -1
 signal attack(body)
 
 func _ready():
+	PlayerController.connect("playerAttacks", self, "_on_damage")
 	initial = position
 
 func _physics_process(delta):
@@ -37,5 +38,17 @@ func _on_Timer_timeout():
 
 func _on_hit_body_entered(body):
 	if body.name == "player":
-		PlayerController.attackPlayer(10)
+		var posDif = position.x - body.position.x
+		print(position.x)
+		print(body.position.x)
+		print(posDif)
+		posDif = posDif / abs(posDif)
+		PlayerController.attackPlayer(10, posDif)
 	pass # Replace with function body.
+
+func _on_damage(damage, body):
+	if body.name == name:
+		life -= damage
+		if life < 0:
+			queue_free()
+

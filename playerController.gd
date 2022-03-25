@@ -7,7 +7,7 @@ var isSuffering = false
 var damageDirection = 0
 
 signal playerHited()
-signal playerAttacks(body, damage)
+signal playerAttacks(body, damage, direction)
 
 func attackPlayer(damage, direction):
 	if isSuffering:
@@ -18,6 +18,6 @@ func attackPlayer(damage, direction):
 	emit_signal("playerHited")
 	print(direction)
 	
-func playerAttacks(damage, body):
-	emit_signal("playerAttacks", damage, body)
+func playerAttacks(damage, body, direction):
+	emit_signal("playerAttacks", damage, body, direction)
 

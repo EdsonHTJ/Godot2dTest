@@ -7,8 +7,9 @@ var G = 9.81
 const jumpForce = 500
 var isAttacking = false
 var initial = Vector2(0,0)
-var life = 100
-
+var maxLife = 100
+var life = maxLife
+var onDeath = false
 var walkdir = -1
 signal attack(body)
 
@@ -17,6 +18,10 @@ func _ready():
 	initial = position
 
 func _physics_process(delta):
+	if onDeath:
+		$hit.get_node("CollisionShape2D").disabled = true
+		return
+		
 	var movx = speedx * walkdir
 	movement.x = movx
 	movement.y += G
@@ -24,6 +29,7 @@ func _physics_process(delta):
 	pass
 
 func _process(delta):
+	$ProgressBar.value = 100 * life / maxLife
 	if movement.x < 0:
 		$AnimatedSprite.flip_h = true
 	elif movement.x > 0:
@@ -46,9 +52,18 @@ func _on_hit_body_entered(body):
 		PlayerController.attackPlayer(10, posDif)
 	pass # Replace with function body.
 
-func _on_damage(damage, body):
+func _on_damage(damage, body, direction):
 	if body.name == name:
 		life -= damage
 		if life < 0:
-			queue_free()
+			$AnimatedSprite.play("death")
+			onDeath = true
+			
 
+
+
+
+func _on_AnimatedSprite_animation_finished():
+	if onDeath:
+		queue_free()
+	pass # Replace with function body.

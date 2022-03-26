@@ -3,8 +3,8 @@ extends KinematicBody2D
 
 var speedx = 200
 var movement = Vector2(0,0)
-var G = 9.81
-const jumpForce = 500
+var G = 2*  9.81
+const jumpForce = 700
 var isAttacking = false
 var atkDirection = 0
 var initial = Vector2(0,0)
@@ -16,8 +16,7 @@ func _ready():
 	PlayerController.connect("playerHited", self, "_on_player_hitted")
 	initial = position
 
-func _physics_process(delta):
-	
+func _physics_process(delta):			
 	var movx = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	
 	if PlayerController.isSuffering:
@@ -74,7 +73,7 @@ func _process(delta):
 			$AnimatedSprite.play("attack")
 		
 func _is_dj_enabled():
-	return djReady
+	return djReady and PlayerController.hasBootPu
 
 func _on_player_hitted():
 	PlayerController.isSuffering = true
@@ -99,8 +98,6 @@ func _on_attackRight_body_entered(body):
 
 func _on_attackLeft_body_entered(body):
 	PlayerController.playerAttacks(playerDamage, body, atkDirection)
-
-
 
 
 func _on_VisibilityNotifier2D_screen_exited():

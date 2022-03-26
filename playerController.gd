@@ -6,6 +6,9 @@ var life = maxLife
 var isSuffering = false
 var damageDirection = 0
 
+var hasBootPu = false
+var hasFirePu = false
+
 signal playerHited()
 signal playerAttacks(body, damage, direction)
 

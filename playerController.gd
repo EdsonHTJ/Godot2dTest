@@ -12,6 +12,9 @@ var hasFirePu = false
 signal playerHited()
 signal playerAttacks(body, damage, direction)
 
+func die():
+	life = maxLife
+
 func attackPlayer(damage, direction):
 	if isSuffering:
 		return

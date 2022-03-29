@@ -11,7 +11,7 @@ var initial = Vector2(0,0)
 var playerDamage = 60
 var maxVely = 500
 var djReady = true
-
+var onDeath = false
 func _ready():
 	PlayerController.connect("playerHited", self, "_on_player_hitted")
 	initial = position
@@ -44,6 +44,10 @@ func _physics_process(delta):
 	
 
 func _process(delta):
+	if PlayerController.life < 0:
+		onDeath = true
+		$AnimatedSprite.play("death")
+		
 	if PlayerController.isSuffering:
 		return 
 		
@@ -82,6 +86,10 @@ func _on_player_hitted():
 	
 
 func _on_AnimatedSprite_animation_finished():
+	if onDeath:
+		onDeath = false
+		_die()
+	
 	if isAttacking:
 		isAttacking = false
 	
@@ -101,5 +109,8 @@ func _on_attackLeft_body_entered(body):
 
 
 func _on_VisibilityNotifier2D_screen_exited():
-	position = initial
+	_die()
 	
+func _die():
+	PlayerController.die()
+	position = initial

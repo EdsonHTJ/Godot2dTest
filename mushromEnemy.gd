@@ -49,7 +49,7 @@ func _on_hit_body_entered(body):
 		print(body.position.x)
 		print(posDif)
 		posDif = posDif / abs(posDif)
-		PlayerController.attackPlayer(10, posDif)
+		PlayerController.attackPlayer(30, posDif)
 	pass # Replace with function body.
 
 func _on_damage(damage, body, direction):

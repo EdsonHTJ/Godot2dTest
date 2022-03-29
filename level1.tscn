@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://res/oak_woods_v1.0/oak_woods_tileset.png" type="Texture" id=1]
 [ext_resource path="res://res/oak_woods_v1.0/background/background_layer_1.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://res/oak_woods_v1.0/decorations/rock_3.png" type="Texture" id=10]
 [ext_resource path="res://mushromEnemy.tscn" type="PackedScene" id=11]
 [ext_resource path="res://bootPowerUp.tscn" type="PackedScene" id=12]
+[ext_resource path="res://hud.tscn" type="PackedScene" id=13]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -836,7 +837,7 @@ motion_scale = Vector2( 0.6, 1 )
 motion_mirroring = Vector2( 1280, 0 )
 
 [node name="background3" type="Sprite" parent="ParallaxBackground2/ParallaxLayer3"]
-position = Vector2( 640, 358.5 )
+position = Vector2( 640, 360 )
 scale = Vector2( 4.08125, 4.08333 )
 texture = ExtResource( 3 )
 
@@ -870,6 +871,7 @@ current = true
 limit_top = 0
 limit_right = 7000
 limit_bottom = 900
+limit_smoothed = true
 
 [node name="mushromEnemy" parent="." instance=ExtResource( 11 )]
 position = Vector2( 1031, 427 )
@@ -919,3 +921,10 @@ position = Vector2( 2204, 820 )
 position = Vector2( 4064, 351 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 6 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="hud" parent="CanvasLayer" instance=ExtResource( 13 )]
+position = Vector2( 11, 11 )
+z_index = 1
+z_as_relative = false

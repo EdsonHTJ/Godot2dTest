@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://PressStart2P-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://hud.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0.498039, 0.486275, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.196078, 0.196078, 0.196078, 1 )
+
+[node name="hud" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 2.0
+margin_top = 3.0
+margin_right = 82.0
+margin_bottom = 20.0
+custom_fonts/font = SubResource( 1 )
+text = "Life:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="life" type="ProgressBar" parent="."]
+margin_left = 79.0
+margin_right = 218.0
+margin_bottom = 22.0
+custom_styles/fg = SubResource( 2 )
+custom_styles/bg = SubResource( 3 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}

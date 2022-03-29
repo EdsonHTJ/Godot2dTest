@@ -1,0 +1,138 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://res/Monsters_Creatures_Fantasy/Skeleton/Walk.png" type="Texture" id=1]
+[ext_resource path="res://res/Monsters_Creatures_Fantasy/Skeleton/Attack.png" type="Texture" id=2]
+[ext_resource path="res://skeletonEnemy.gd" type="Script" id=3]
+[ext_resource path="res://res/Monsters_Creatures_Fantasy/Skeleton/Death.png" type="Texture" id=4]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 150, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 300, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 450, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 2 )
+region = Rect2( 600, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 2 )
+region = Rect2( 750, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 2 )
+region = Rect2( 900, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 2 )
+region = Rect2( 1050, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=19]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=20]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 150, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=21]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 300, 0, 150, 150 )
+
+[sub_resource type="AtlasTexture" id=22]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 450, 0, 150, 150 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
+"loop": false,
+"name": "attack",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ) ],
+"loop": true,
+"name": "death",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 20.0
+height = 68.0
+
+[sub_resource type="CircleShape2D" id=15]
+radius = 51.0
+
+[sub_resource type="StyleBoxFlat" id=16]
+bg_color = Color( 0.0196078, 0.380392, 0.152941, 1 )
+
+[sub_resource type="StyleBoxFlat" id=17]
+bg_color = Color( 0.137255, 0.137255, 0.137255, 1 )
+
+[sub_resource type="CircleShape2D" id=18]
+radius = 616.003
+
+[node name="skeletonEnemy" type="KinematicBody2D"]
+script = ExtResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 15, 0 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 5 )
+playing = true
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 5, 0 )
+shape = SubResource( 6 )
+
+[node name="hit" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hit"]
+position = Vector2( -71, -14 )
+shape = SubResource( 15 )
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+margin_left = -27.0
+margin_top = -78.0
+margin_right = 29.0
+margin_bottom = -64.0
+custom_styles/fg = SubResource( 16 )
+custom_styles/bg = SubResource( 17 )
+value = 10.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="detectRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="detectRadius"]
+shape = SubResource( 18 )
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="body_entered" from="hit" to="." method="_on_hit_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="detectRadius" to="." method="_on_detectRadius_body_entered"]

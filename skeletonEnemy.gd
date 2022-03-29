@@ -1,13 +1,13 @@
 extends KinematicBody2D
 
 
-var speedx = 200
+var speedx = 50
 var movement = Vector2(0,0)
 var G = 9.81
 const jumpForce = 500
 var isAttacking = false
 var initial = Vector2(0,0)
-var maxLife = 100
+var maxLife = 1000
 var life = maxLife
 var onDeath = false
 var walkdir = -1
@@ -27,7 +27,7 @@ func _physics_process(delta):
 			return
 		
 		if foundPlayer:	
-			var movx = speedx * position.direction_to(player.position).x
+			var movx = speedx * walkdir
 			movement.x = movx
 			movement.y += G
 			move_and_slide(movement, Vector2.UP)
@@ -51,6 +51,8 @@ func _attack():
 		$AnimatedSprite.play("attack")
 
 func _on_Timer_timeout():
+	if foundPlayer:	
+			walkdir = position.direction_to(player.position).x
 	_attack()
 	pass # Replace with function body.
 

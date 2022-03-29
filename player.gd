@@ -108,9 +108,6 @@ func _on_attackLeft_body_entered(body):
 	PlayerController.playerAttacks(playerDamage, body, atkDirection)
 
 
-func _on_VisibilityNotifier2D_screen_exited():
-	_die()
-	
 func _die():
 	PlayerController.die()
 	position = initial

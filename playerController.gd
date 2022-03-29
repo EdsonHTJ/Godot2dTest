@@ -14,6 +14,10 @@ signal playerAttacks(body, damage, direction)
 
 func die():
 	life = maxLife
+	
+func killPlayer():
+	life = -1
+	emit_signal("playerHited")
 
 func attackPlayer(damage, direction):
 	if isSuffering:

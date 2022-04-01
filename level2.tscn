@@ -9,7 +9,7 @@
 [ext_resource path="res://mushromEnemy.tscn" type="PackedScene" id=7]
 [ext_resource path="res://skeletonEnemy.tscn" type="PackedScene" id=8]
 [ext_resource path="res://killPlayer.tscn" type="PackedScene" id=9]
-[ext_resource path="res://res/Castlevania_ Symphony of the Night - Dracula's Castle (192  kbps) (www.youtube2mp3.biz).mp3" type="AudioStream" id=10]
+[ext_resource path="res://res/X2Download.com - I Will Survive Instrumental (128 kbps).mp3" type="AudioStream" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )

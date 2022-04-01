@@ -65,5 +65,6 @@ func _on_damage(damage, body, direction):
 
 func _on_AnimatedSprite_animation_finished():
 	if onDeath:
+		PlayerController.score += 10
 		queue_free()
 	pass # Replace with function body.

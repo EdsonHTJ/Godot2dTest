@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/X2Download.com - 1.2 Colinas Não Tão Verdejantes (_Not So Green_ Zone Hill) _ OST Lenda do Herói (256 kbps).mp3-e1346605a60dbeca0fecb8de52834b22.mp3str"
+
+[deps]
+
+source_file="res://res/X2Download.com - 1.2 Colinas Não Tão Verdejantes (_Not So Green_ Zone Hill) _ OST Lenda do Herói (256 kbps).mp3"
+dest_files=[ "res://.import/X2Download.com - 1.2 Colinas Não Tão Verdejantes (_Not So Green_ Zone Hill) _ OST Lenda do Herói (256 kbps).mp3-e1346605a60dbeca0fecb8de52834b22.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://res/oak_woods_v1.0/oak_woods_tileset.png" type="Texture" id=1]
 [ext_resource path="res://res/oak_woods_v1.0/background/background_layer_1.png" type="Texture" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://hud.tscn" type="PackedScene" id=13]
 [ext_resource path="res://nextLevel.tscn" type="PackedScene" id=14]
 [ext_resource path="res://killPlayer.tscn" type="PackedScene" id=15]
+[ext_resource path="res://res/X2Download.com - 1.2 Colinas Não Tão Verdejantes (_Not So Green_ Zone Hill) _ OST Lenda do Herói (256 kbps).mp3" type="AudioStream" id=16]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -928,6 +929,11 @@ texture = ExtResource( 6 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer"]
+stream = ExtResource( 16 )
+volume_db = -30.917
+autoplay = true
+
 [node name="hud" parent="CanvasLayer" instance=ExtResource( 13 )]
 z_index = 1
 z_as_relative = false
@@ -938,5 +944,5 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="killPlayer" parent="." instance=ExtResource( 15 )]
-position = Vector2( -326, -6092 )
+position = Vector2( -300, -6592 )
 scale = Vector2( 10, 10 )

@@ -84,6 +84,8 @@ func _on_AnimatedSprite_animation_finished():
 		$AnimatedSprite.play("default") 
 	else:
 		if onDeath:
+			PlayerController.score += 50
+			PlayerController.gameOver()
 			queue_free()
 	pass # Replace with function body.
 

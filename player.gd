@@ -12,13 +12,34 @@ var playerDamage = 60
 var maxVely = 500
 var djReady = true
 var onDeath = false
+
+var espMov = Vector2(0,0)
+var atkBtn = 0
+var jumpBtn = 0
+var isJumpingFlg = false
+var isAtkFlg = false
+
 func _ready():
 	PlayerController.connect("playerHited", self, "_on_player_hitted")
+	Socket.connect_to_server()
+	Socket.connect("setUserState", self, "_setUserState")
 	initial = position
 
-func _physics_process(delta):			
-	var movx = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+func _setUserState(x, y, b1, b2):
+	espMov.x = x
+	espMov.y = y
+	isJumpingFlg = (b1 > jumpBtn)
+	isAtkFlg = (b2 > atkBtn)
+	jumpBtn = b1
+	atkBtn = b2
 	
+	pass
+func _physics_process(delta):			
+	#var movx = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	var movx = (espMov.x - 50)
+	if abs(movx) < 5:
+		movx = 0
+	movx = movx /50
 	if PlayerController.isSuffering:
 		movx = -1 * PlayerController.damageDirection
 		$AnimatedSprite.flip_h = (PlayerController.damageDirection != 1)
@@ -34,7 +55,9 @@ func _physics_process(delta):
 	else:
 		djReady = true
 
-	var jump = Input.is_action_just_pressed("jump")
+	#var jump = Input.is_action_just_pressed("jump")
+	var jump = isJumpingFlg
+	isJumpingFlg = false
 	if jump and (is_on_floor() or _is_dj_enabled()):
 		if (not is_on_floor()):
 			djReady = false
@@ -71,7 +94,10 @@ func _process(delta):
 		elif movement.x > 0:
 			$AnimatedSprite.flip_h = false
 		
-		if Input.is_action_just_pressed("attack"):
+		#if Input.is_action_just_pressed("attack")
+		var isAtk = isAtkFlg
+		isAttacking = false
+		if isAtk:
 			isAttacking = true
 			atkDirection = 1 if ($AnimatedSprite.flip_h == false) else -1
 			$AnimatedSprite.play("attack")

@@ -10,13 +10,13 @@ signal setUserState(player, x, y, b1, b2)
 
 func _ready():
 	client = StreamPeerTCP.new()
-	client.set_no_delay(true)
+	Socket.connect_to_server()
 	
 func _exit_tree():
 	disconnect_from_server()
 
 func connect_to_server():
-	var ip = "192.168.61.220"
+	var ip = "192.168.1.224"
 	var port = 80
 	print("Connecting to server: %s : %s" % [ip, str(port)])
 	var connect = client.connect_to_host(ip, port)
@@ -34,12 +34,14 @@ func _process(delta):
 	if connected and not client.is_connected_to_host():
 		connected = false
 	if client.is_connected_to_host():
+		client.set_no_delay(true)
 		poll_server()
 
 
 func poll_server():
 	while client.get_available_bytes() > 0:
 		var msg = client.get_utf8_string(client.get_available_bytes())
+		print(msg)
 		if msg == null:
 			continue;
 			
@@ -52,9 +54,12 @@ func poll_server():
 					text+=c
 
 func on_text_received(text): #"1 Sobe"
-	var cmd = JSON.parse(text)
-	print(cmd.result)
-	emit_signal("setUserState", cmd.result.X, cmd.result.Y, cmd.result.b1, cmd.result.b2)
+	var cmds = text.split(",")
+	var cmds2 = []
+	for i in range(len(cmds)):
+		cmds2.append(cmds[i].split(":"))
+
+	emit_signal("setUserState", int(cmds2[2][1]), int(cmds2[3][1]), int(cmds2[0][1]), int(cmds2[1][1]))
 	
 func write_text(text):
 	if connected and client.is_connected_to_host():

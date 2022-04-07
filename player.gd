@@ -13,7 +13,7 @@ var maxVely = 500
 var djReady = true
 var onDeath = false
 
-var espMov = Vector2(0,0)
+var espMov = Vector2(50,50)
 var atkBtn = 0
 var jumpBtn = 0
 var isJumpingFlg = false
@@ -21,15 +21,17 @@ var isAtkFlg = false
 
 func _ready():
 	PlayerController.connect("playerHited", self, "_on_player_hitted")
-	Socket.connect_to_server()
+
 	Socket.connect("setUserState", self, "_setUserState")
 	initial = position
 
 func _setUserState(x, y, b1, b2):
 	espMov.x = x
 	espMov.y = y
-	isJumpingFlg = (b1 > jumpBtn)
-	isAtkFlg = (b2 > atkBtn)
+	if (b1 > jumpBtn):
+		isJumpingFlg = true
+	if(b2 > atkBtn):
+		isAtkFlg = true
 	jumpBtn = b1
 	atkBtn = b2
 	
@@ -53,7 +55,9 @@ func _physics_process(delta):
 		if movement.y > maxVely:
 			movement.y = maxVely
 	else:
-		djReady = true
+		if not djReady:
+			djReady = true
+			#Socket.write_text("l1")
 
 	#var jump = Input.is_action_just_pressed("jump")
 	var jump = isJumpingFlg
@@ -61,14 +65,16 @@ func _physics_process(delta):
 	if jump and (is_on_floor() or _is_dj_enabled()):
 		if (not is_on_floor()):
 			djReady = false
+			#Socket.write_text("l0")
 		movement.y = -jumpForce
 		
 	move_and_slide(movement, Vector2.UP)
 	
 
 func _process(delta):
-	if PlayerController.life < 0:
+	if PlayerController.life < 0 and not onDeath:
 		onDeath = true
+		Socket.write_text("l1")
 		$AnimatedSprite.play("death")
 		
 	if PlayerController.isSuffering:
@@ -96,7 +102,7 @@ func _process(delta):
 		
 		#if Input.is_action_just_pressed("attack")
 		var isAtk = isAtkFlg
-		isAttacking = false
+		isAtkFlg = false
 		if isAtk:
 			isAttacking = true
 			atkDirection = 1 if ($AnimatedSprite.flip_h == false) else -1
@@ -135,5 +141,6 @@ func _on_attackLeft_body_entered(body):
 
 
 func _die():
+	Socket.write_text("l0")
 	PlayerController.die()
 	position = initial

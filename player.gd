@@ -34,14 +34,15 @@ func _setUserState(x, y, b1, b2):
 		isAtkFlg = true
 	jumpBtn = b1
 	atkBtn = b2
-	
 	pass
+	
 func _physics_process(delta):			
-	#var movx = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	var movx = (espMov.x - 50)
-	if abs(movx) < 5:
-		movx = 0
-	movx = movx /50
+	var movx = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+
+	#var movx = (espMov.x - 50)
+	#if abs(movx) < 5:
+	#	movx = 0
+	movx = movx 
 	if PlayerController.isSuffering:
 		movx = -1 * PlayerController.damageDirection
 		$AnimatedSprite.flip_h = (PlayerController.damageDirection != 1)
@@ -59,8 +60,8 @@ func _physics_process(delta):
 			djReady = true
 			#Socket.write_text("l1")
 
-	#var jump = Input.is_action_just_pressed("jump")
-	var jump = isJumpingFlg
+	var jump = Input.is_action_just_pressed("jump")
+	#var jump = isJumpingFlg
 	isJumpingFlg = false
 	if jump and (is_on_floor() or _is_dj_enabled()):
 		if (not is_on_floor()):
@@ -100,8 +101,8 @@ func _process(delta):
 		elif movement.x > 0:
 			$AnimatedSprite.flip_h = false
 		
-		#if Input.is_action_just_pressed("attack")
-		var isAtk = isAtkFlg
+		var isAtk = Input.is_action_just_pressed("attack")
+		#var isAtk = isAtkFlg
 		isAtkFlg = false
 		if isAtk:
 			isAttacking = true

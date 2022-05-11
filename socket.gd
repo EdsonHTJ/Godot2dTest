@@ -6,7 +6,7 @@ var connected = false
 
 var text = ""
 
-signal setUserState(player, x, y, b1, b2)
+signal setUserState(x, y, b1, b2)
 
 func _ready():
 	client = StreamPeerTCP.new()

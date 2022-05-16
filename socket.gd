@@ -10,13 +10,14 @@ signal setUserState(x, y, b1, b2)
 
 func _ready():
 	client = StreamPeerTCP.new()
+	client.set_no_delay(true)
 	Socket.connect_to_server()
 	
 func _exit_tree():
 	disconnect_from_server()
 
 func connect_to_server():
-	var ip = "192.168.1.224"
+	var ip = "192.168.1.112"
 	var port = 80
 	print("Connecting to server: %s : %s" % [ip, str(port)])
 	var connect = client.connect_to_host(ip, port)
@@ -54,12 +55,19 @@ func poll_server():
 					text+=c
 
 func on_text_received(text): #"1 Sobe"
-	var cmds = text.split(",")
-	var cmds2 = []
-	for i in range(len(cmds)):
-		cmds2.append(cmds[i].split(":"))
+	var cmds = text.split(" ")
+	
+	var isAtk = 0
+	if cmds[0] == "ATK":
+		isAtk = 1
+	var movx = 0xff
+	var movy = 0xff
+	
+	if cmds[0] == "MOV":
+		movx = int(cmds[1])
+	
 
-	emit_signal("setUserState", int(cmds2[2][1]), int(cmds2[3][1]), int(cmds2[0][1]), int(cmds2[1][1]))
+	emit_signal("setUserState", movx, 0, 0, isAtk)
 	
 func write_text(text):
 	if connected and client.is_connected_to_host():

@@ -13,7 +13,7 @@ var maxVely = 500
 var djReady = true
 var onDeath = false
 
-var espMov = Vector2(50,50)
+var espMov = Vector2(0,0)
 var atkBtn = 0
 var jumpBtn = 0
 var isJumpingFlg = false
@@ -31,12 +31,11 @@ func _setUserState(x, y, b1, b2):
 	if x != 0xff:
 		espMov.x = x
 		espMov.y = y
+	print("Isjmp ", b1)
 	if (true):
-		isJumpingFlg = true
+		isJumpingFlg = b1
 	if(true):
-		isAtkFlg = true
-	jumpBtn = b1
-	atkBtn = b2
+		isAtkFlg = b2
 	pass
 	
 func _physics_process(delta):
@@ -67,7 +66,7 @@ func _physics_process(delta):
 			#Socket.write_text("l1")
 
 	var jump 
-	if  ESP:
+	if  !ESP:
 		jump = Input.is_action_just_pressed("jump")
 	else:
 		jump = isJumpingFlg

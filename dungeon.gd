@@ -7,6 +7,20 @@ var mushEnemy = load("res://mushromEnemy.tscn")
 func _ready():
 	generate_level()
 	
+func inspectCell(location, n):
+	var y = -1
+	var x = -1
+	while y < n: 
+		x += 1
+		if x > n:
+			var exists = tilemap.get_cellv(Vector2(location.x + x, location.y + y))
+			if exists != -1:
+				return false
+			x = 0
+			y +=1
+			
+	return true
+			
 func generate_level():
 	randomize()
 	PlayerController.hasBootPu = true
@@ -33,14 +47,19 @@ func generate_level():
 	var finish = false
 	while not finish:
 		var exists = tilemap.get_cell(x,y)
+		
 		if exists != tilemap.INVALID_CELL:
-			"""var upper = tilemap.get_cell(x,y-1)
-			var down = tilemap.get_cell(x, y+1)
+			#var upper = tilemap.get_cell(x,y-1)
+			#var down = tilemap.get_cell(x, y+1)
 			
-			if upper == tilemap.INVALID_CELL and down == tilemap.INVALID_CELL:
-				tilemap.set_cellv(x, y, -1)
-			"""
+			#if upper == tilemap.INVALID_CELL and down == tilemap.INVALID_CELL:
+			#	tilemap.set_cellv(Vector2(x, y), -1)
+			pass
 		else:
+			if(inspectCell(Vector2(x,y), 6)):
+				print("invert cell:", x, " ", y)
+				#tilemap.set_cellv(Vector2(x,y), 0)
+				pass
 			var upper = tilemap.get_cell(x,y-1)
 			var down = tilemap.get_cell(x, y+1)
 			

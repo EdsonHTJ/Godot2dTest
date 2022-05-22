@@ -1,14 +1,11 @@
 extends KinematicBody2D
 
 
-var speedx = 200
 var movement = Vector2(0,0)
 var G = 2*  9.81
-const jumpForce = 700
 var isAttacking = false
 var atkDirection = 0
 var initial = Vector2(0,0)
-var playerDamage = 60
 var maxVely = 500
 var djReady = true
 var onDeath = false
@@ -19,7 +16,7 @@ var jumpBtn = 0
 var isJumpingFlg = false
 var isAtkFlg = false
 
-const ESP=true;
+const ESP=false;
 
 func _ready():
 	PlayerController.connect("playerHited", self, "_on_player_hitted")
@@ -51,7 +48,7 @@ func _physics_process(delta):
 	if PlayerController.isSuffering:
 		movx = -1 * PlayerController.damageDirection
 		$AnimatedSprite.flip_h = (PlayerController.damageDirection != 1)
-	movement.x = movx * speedx
+	movement.x = movx * PlayerController.speedx
 	
 	if(is_on_ceiling()):
 		movement.y = 0
@@ -67,7 +64,7 @@ func _physics_process(delta):
 
 	var jump 
 	if  !ESP:
-		jump = Input.is_action_just_pressed("jump")
+		jump = Input.is_action_just_pressed("jump") or isJumpingFlg
 	else:
 		jump = isJumpingFlg
 	isJumpingFlg = false
@@ -75,12 +72,13 @@ func _physics_process(delta):
 		if (not is_on_floor()):
 			djReady = false
 			#Socket.write_text("l0")
-		movement.y = -jumpForce
+		movement.y = -PlayerController.jumpForce
 		
 	move_and_slide(movement, Vector2.UP)
 	
 
 func _process(delta):
+	PlayerController.lastPos = position
 	if PlayerController.life < 0 and not onDeath:
 		onDeath = true
 		Socket.write_text("l1")
@@ -145,12 +143,12 @@ func _on_AnimatedSprite_animation_finished():
 
 func _on_attackRight_body_entered(body):
 	print(body.name)
-	PlayerController.playerAttacks(playerDamage, body, atkDirection)
+	PlayerController.playerAttacks(PlayerController.playerDamage, body, atkDirection)
 
 
 
 func _on_attackLeft_body_entered(body):
-	PlayerController.playerAttacks(playerDamage, body, atkDirection)
+	PlayerController.playerAttacks(PlayerController.playerDamage, body, atkDirection)
 
 
 func _die():

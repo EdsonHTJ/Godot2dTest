@@ -7,8 +7,15 @@ var lifes = 3
 var isSuffering = false
 var damageDirection = 0
 var score = 0
-var hasBootPu = false
+var hasBootPu = true
 var hasFirePu = false
+
+var playerDamage = 60
+var speedx = 200
+var jumpForce = 600
+var lastDoorPos = 0
+
+var lastPos = Vector2(600, 600)
 
 signal playerHited()
 signal playerAttacks(body, damage, direction)
